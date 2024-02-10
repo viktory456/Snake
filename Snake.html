@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Snake Game</title>
+    <style>
+        #gameBox {
+            width: 800px;
+            height: 800px;
+            background-color: antiquewhite;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            line-height: 100px;
+            outline: 1px solid green;
+        }
+        .startButton{
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameBox">
+        <div class="cell" data-key="00" id="00"></div>
+        <div class="cell" data-key="01" id="01"></div>
+        <div class="cell" data-key="02" id="02"></div>
+        <div class="cell" data-key="03" id="03"></div>
+        <div class="cell" data-key="04" id="04"></div>
+        <div class="cell" data-key="05" id="05"></div>
+        <div class="cell" data-key="06" id="06"></div>
+        <div class="cell" data-key="07" id="07"></div>
+        <div class="cell" data-key="10" id="10"></div>
+        <div class="cell" data-key="11" id="11"></div>
+        <div class="cell" data-key="12" id="12"></div>
+        <div class="cell" data-key="13" id="13"></div>
+        <div class="cell" data-key="14" id="14"></div>
+        <div class="cell" data-key="15" id="15"></div>
+        <div class="cell" data-key="16" id="16"></div>
+        <div class="cell" data-key="17" id="17"></div> 
+        <div class="cell" data-key="20" id="20"></div>
+        <div class="cell" data-key="21" id="21"></div>
+        <div class="cell" data-key="22" id="22"></div>
+        <div class="cell" data-key="23" id="23"></div>
+        <div class="cell" data-key="24" id="24"></div>
+        <div class="cell" data-key="25" id="25"></div>
+        <div class="cell" data-key="26" id="26"></div>
+        <div class="cell" data-key="27" id="27"></div> 
+        <div class="cell" data-key="30" id="30"></div>
+        <div class="cell" data-key="31" id="31"></div>
+        <div class="cell" data-key="32" id="32"></div>
+        <div class="cell" data-key="33" id="33"></div>
+        <div class="cell" data-key="34" id="34"></div>
+        <div class="cell" data-key="35" id="35"></div>
+        <div class="cell" data-key="36" id="36"></div>
+        <div class="cell" data-key="37" id="37"></div> 
+        <div class="cell" data-key="40" id="40"></div>
+        <div class="cell" data-key="41" id="41"></div>
+        <div class="cell" data-key="42" id="42"></div>
+        <div class="cell" data-key="43" id="43"></div>
+        <div class="cell" data-key="44" id="44"></div>
+        <div class="cell" data-key="45" id="45"></div>
+        <div class="cell" data-key="46" id="46"></div>
+        <div class="cell" data-key="47" id="47"></div>
+        <div class="cell" data-key="50" id="50"></div>
+        <div class="cell" data-key="51" id="51"></div>
+        <div class="cell" data-key="52" id="52"></div>
+        <div class="cell" data-key="53" id="53"></div>
+        <div class="cell" data-key="54" id="54"></div>
+        <div class="cell" data-key="55" id="55"></div>
+        <div class="cell" data-key="56" id="56"></div>
+        <div class="cell" data-key="57" id="57"></div> 
+        <div class="cell" data-key="60" id="60"></div>
+        <div class="cell" data-key="61" id="61"></div>
+        <div class="cell" data-key="62" id="62"></div>
+        <div class="cell" data-key="63" id="63"></div>
+        <div class="cell" data-key="64" id="64"></div>
+        <div class="cell" data-key="65" id="65"></div>
+        <div class="cell" data-key="66" id="66"></div>
+        <div class="cell" data-key="67" id="67"></div> 
+        <div class="cell" data-key="70" id="70"></div>
+        <div class="cell" data-key="71" id="71"></div>
+        <div class="cell" data-key="72" id="72"></div>
+        <div class="cell" data-key="73" id="73"></div>
+        <div class="cell" data-key="74" id="74"></div>
+        <div class="cell" data-key="75" id="75"></div>
+        <div class="cell" data-key="76" id="76"></div>
+        <div class="cell" data-key="77" id="77"></div>  
+    </div>
+
+    <script>
+      function Game (){
+        const cells = document.querySelectorAll('.cell')
+        var coordinateX = Math.floor(Math.random()*8)
+        var coordinateY = Math.floor(Math.random()*8)
+        var coordinates = [coordinateX.toString(), coordinateY.toString()].join('')
+        var snakeCoordinates = [coordinates]
+        cells.forEach(function (item) {
+            if(item.dataset.key === coordinates){
+                item.innerText = '🟩';
+            };
+        });
+
+        const createFood = () => {
+            const availableCells = []
+            cells.forEach(function(item) {
+                for(let i=0; i<snakeCoordinates.length; i++){
+                    if(item.dataset.key != snakeCoordinates[i]){
+                        availableCells.push(item.dataset.key)
+                    }
+                }
+            })
+            var foodCoordinatesIndex = Math.floor(Math.random()*availableCells.length)
+            var foodCoordinates = availableCells[foodCoordinatesIndex]
+            cells.forEach(function(item) {
+                if(item.dataset.key === foodCoordinates){
+                    item.innerText = '🍎'
+                }
+            })
+        }
+        createFood();
+
+        document.addEventListener('keydown', (event) => {
+            var food;
+            cells.forEach(function (item) {
+                if(item.innerText === '🍎'){
+                    food = item.dataset.key;
+                };
+            }); 
+            var keyName = event.key;
+            if(keyName === 'ArrowUp'){
+                coordinateX -= 1
+                coordinates = [coordinateX.toString(), coordinateY.toString()].join('')
+                
+                if(coordinates === food){
+                    snakeCoordinates.push(coordinates)
+                    for (const entry of cells.entries()) {
+                        if(entry[1].id === coordinates){
+                            entry[1].innerText = '🟩'
+                        };
+                    }
+                    createFood();                
+                } else {
+                    snakeCoordinates.push(coordinates)
+                    snakeCoordinates = snakeCoordinates.slice(1)
+                    for (const entry of cells.entries()) {
+                        for(let i = 0; i<snakeCoordinates.length; i++){
+                            if(entry[1].id === snakeCoordinates[i]){
+                                entry[1].innerText = '🟩';
+                        } else {
+                            entry[1].innerText = ''
+                        }    
+                    }}
+                    cells.forEach(function (item) {
+                        if(item.dataset.key === food){
+                        item.innerText = '🍎';
+                        };
+                    }); 
+                }
+           } else if(keyName === 'ArrowDown'){
+                coordinateX += 1
+                coordinates = [coordinateX.toString(), coordinateY.toString()].join('')
+                snakeCoordinates.push(coordinates)
+                const coordinateToRemove = snakeCoordinates.shift()
+                console.log(coordinateToRemove);
+                cells.forEach(function (item) {
+                    for(let i = 0; i<snakeCoordinates.length; i++){
+                        if(item.dataset.key === snakeCoordinates[i]){
+                        item.innerText = '🟩';
+                    } else if(item.dataset.key === coordinateToRemove){
+                        item.innerText = item.dataset.key;
+                    }
+                } 
+                });
+            } else if(keyName === 'ArrowRight'){
+                coordinateY += 1
+                coordinates = [coordinateX.toString(), coordinateY.toString()].join('')
+                snakeCoordinates.push(coordinates)
+                const coordinateToRemove = snakeCoordinates.shift()
+                console.log(coordinateToRemove);
+                cells.forEach(function (item) {
+                    for(let i = 0; i<snakeCoordinates.length; i++){
+                        if(item.dataset.key === snakeCoordinates[i]){
+                        item.innerText = '🟩';
+                    } else if(item.dataset.key === coordinateToRemove){
+                        item.innerText = item.dataset.key;
+                    }
+                } 
+                });
+            } else if (keyName === 'ArrowLeft'){
+                coordinateY -= 1
+                coordinates = [coordinateX.toString(), coordinateY.toString()].join('')
+                snakeCoordinates.push(coordinates)
+                const coordinateToRemove = snakeCoordinates.shift()
+                console.log(coordinateToRemove);
+                cells.forEach(function (item) {
+                    for(let i = 0; i<snakeCoordinates.length; i++){
+                        if(item.dataset.key === snakeCoordinates[i]){
+                        item.innerText = '🟩';
+                    } else if(item.dataset.key === coordinateToRemove){
+                        item.innerText = item.dataset.key;
+                    }
+                } 
+                });
+            }
+         }, false);
+         
+
+
+
+}
+
+Game()
+    </script>
+</body>
+</html>
